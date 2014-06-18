@@ -1,0 +1,5 @@
+CREATE TABLE task(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  work CHAR (150),
+  person_id INT
+)
