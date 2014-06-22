@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:Beans.xml")
+@ContextConfiguration("classpath:configuration/services-config.xml")
 public class TaskRepositoryTest {
 
   @Autowired

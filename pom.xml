@@ -7,14 +7,37 @@
     <artifactId>todo-scheduler</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <properties>
-      <persistence.properties.file>
-        ${project.build.outputDirectory}/properties/persistence.properties
-      </persistence.properties.file>
-      <jdbc.driver>${com.prateekj.jdbc.driver}</jdbc.driver>
-      <jdbc.url>${com.prateekj.jdbc.url}</jdbc.url>
-    </properties>
+    <packaging>war</packaging>
 
+
+  <profiles>
+
+    <profile>
+      <id>development</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <persistence.properties.file>
+          ${project.build.outputDirectory}/properties/persistence.properties
+        </persistence.properties.file>
+        <jdbc.driver>${com.prateekj.jdbc.driver}</jdbc.driver>
+        <jdbc.url>${com.prateekj.jdbc.url}</jdbc.url>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>test</id>
+      <properties>
+        <persistence.properties.file>
+          ${project.build.outputDirectory}/properties/persistence-test.properties
+        </persistence.properties.file>
+        <jdbc.driver>${com.prateekj.jdbc.driver}</jdbc.driver>
+        <jdbc.url>${com.prateekj.jdbc.url}</jdbc.url>
+      </properties>
+    </profile>
+
+  </profiles>
 
   <dependencies>
 
@@ -106,6 +129,50 @@
       <version>3.1.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>3.2.8.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>3.2.8.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.3.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.3.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.3.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path</artifactId>
+      <version>0.9.1</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -153,6 +220,17 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat6-maven-plugin</artifactId>
+        <version>2.0</version>
+        <configuration>
+          <port>3000</port>
+          <server>MyServer</server>
+        </configuration>
+      </plugin>
+
 
     </plugins>
   </build>

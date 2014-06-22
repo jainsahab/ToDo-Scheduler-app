@@ -26,7 +26,7 @@ public class PersonServiceTest {
     Person somePerson = new Person();
     somePerson.setTasks(asList(new Task()));
 
-    personService.saveProgram(somePerson);
+    personService.savePerson(somePerson);
 
     verify(personRepository).save(eq(somePerson));
   }

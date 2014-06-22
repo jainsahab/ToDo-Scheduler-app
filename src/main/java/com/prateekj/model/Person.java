@@ -1,5 +1,6 @@
 package com.prateekj.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode(of = {"id","name"})
 public class Person {
 
   @Id
