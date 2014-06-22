@@ -11,13 +11,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @EqualsAndHashCode(of = {"id","name"})
-public class Person {
+@Table(name = "user")
+public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +27,6 @@ public class Person {
 
   String name;
 
-  @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   List<Task> tasks;
 }

@@ -1,9 +1,9 @@
 package com.prateekj.services;
 
-import com.prateekj.model.Person;
 import com.prateekj.model.Task;
-import com.prateekj.repositories.PersonRepository;
+import com.prateekj.model.User;
 import com.prateekj.repositories.TaskRepository;
+import com.prateekj.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 public class TaskService {
 
   @Autowired
-  private PersonRepository personRepository;
+  private UserRepository userRepository;
 
   @Autowired
   private TaskRepository taskRepository;
 
-  public Task saveTaskFor(Person person, Task task) {
-    Person existsPerson = personRepository.findOne(person.getId());
-    task.setPerson(existsPerson);
+  public Task saveTaskFor(User user, Task task) {
+    User existsUser = userRepository.findOne(user.getId());
+    task.setUser(existsUser);
     return taskRepository.save(task);
   }
 }

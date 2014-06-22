@@ -1,0 +1,2 @@
+ALTER TABLE person
+RENAME TO user;

@@ -1,7 +1,7 @@
 package com.prateekj.controllers;
 
-import com.prateekj.model.Person;
-import com.prateekj.services.PersonService;
+import com.prateekj.model.User;
+import com.prateekj.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(value = "/users")
-public class PersonController {
+public class UserController {
 
-  private PersonService personService;
+  private UserService userService;
 
   @Autowired
-  public PersonController(PersonService personService){
-    this.personService = personService;
+  public UserController(UserService userService){
+    this.userService = userService;
   }
 
   @RequestMapping(value = "/add", method = RequestMethod.PUT)
-  public ResponseEntity<Void> addUser(@RequestBody Person person){
-    personService.savePerson(person);
+  public ResponseEntity<Void> addUser(@RequestBody User user){
+    userService.saveUser(user);
     return new ResponseEntity<Void>(HttpStatus.CREATED);
   }
 }

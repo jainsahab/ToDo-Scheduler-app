@@ -10,12 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 
 @Getter
 @Setter
 @Entity
 @EqualsAndHashCode(of = {"work"})
+@Table(name = "task")
 public class Task {
 
   @Id
@@ -23,8 +25,8 @@ public class Task {
   Integer id;
 
   @ManyToOne
-  @JoinColumn(name = "person_id")
-  Person person;
+  @JoinColumn(name = "user_id")
+  User user;
 
   String work;
 }

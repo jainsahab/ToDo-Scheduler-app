@@ -1,7 +1,7 @@
 package com.prateekj.repositories;
 
-import com.prateekj.model.Person;
 import com.prateekj.model.Task;
+import com.prateekj.model.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,35 +25,35 @@ public class TaskRepositoryTest {
   private TaskRepository taskRepository;
 
   @Autowired
-  private PersonRepository personRepository;
+  private UserRepository userRepository;
 
-  private Person person;
+  private User user;
 
   @Before
   public void setUp(){
-    person = new Person();
-    person.setName("some-name");
-    personRepository.save(person);
+    user = new User();
+    user.setName("some-name");
+    userRepository.save(user);
   }
 
   @After
   public void tearDown(){
-    personRepository.deleteAll();
+    userRepository.deleteAll();
   }
 
   @Test
-  public void shouldSaveTheTaskWhenPersonIsPreSaved(){
+  public void shouldSaveTheTaskWhenUserIsPreSaved(){
     Task someTask = new Task();
     someTask.setWork("some work");
-    someTask.setPerson(person);
+    someTask.setUser(user);
 
     Task someTask2 = new Task();
     someTask2.setWork("some work");
-    someTask2.setPerson(person);
+    someTask2.setUser(user);
 
     taskRepository.save(asList(someTask, someTask2));
 
-    List<Task> allTasks = taskRepository.findByPerson(person);
+    List<Task> allTasks = taskRepository.findByUser(user);
 
     assertThat(allTasks, hasSize(2));
     assertThat(allTasks, contains(someTask, someTask2));

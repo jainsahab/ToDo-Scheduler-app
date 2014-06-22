@@ -1,9 +1,9 @@
 package com.prateekj.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prateekj.maker.PersonMaker;
-import com.prateekj.model.Person;
-import com.prateekj.services.PersonService;
+import com.prateekj.maker.UserMaker;
+import com.prateekj.model.User;
+import com.prateekj.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({"classpath:/configuration/test-services-config.xml", "classpath:configuration/mvc-dispatcher-config.xml"})
-public class PersonControllerTest {
+public class UserControllerTest {
 
   @Autowired
   private WebApplicationContext wac;
@@ -34,9 +34,9 @@ public class PersonControllerTest {
   private MockMvc mockMvc;
 
   @Autowired
-  private PersonService personService;
+  private UserService userService;
 
-  private Person person;
+  private User user;
 
 
   @Before
@@ -46,12 +46,12 @@ public class PersonControllerTest {
 
   @Test
   public void shouldAddTheUser() throws Exception {
-    person = make(a(PersonMaker.Person, with(PersonMaker.name, "some-person")));
+    user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
 
-    mockMvc.perform(put("/users/add").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(person)))
+    mockMvc.perform(put("/users/add").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(user)))
         .andExpect(status().isCreated());
 
-    verify(personService).savePerson(person);
+    verify(userService).saveUser(user);
   }
 
 }
