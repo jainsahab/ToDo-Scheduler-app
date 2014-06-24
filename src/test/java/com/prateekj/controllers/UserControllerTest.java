@@ -20,7 +20,10 @@ import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static com.natpryce.makeiteasy.MakeItEasy.with;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -52,6 +55,20 @@ public class UserControllerTest {
         .andExpect(status().isCreated());
 
     verify(userService).saveUser(user);
+  }
+
+  @Test
+  public void shouldGetTheUserById() throws Exception {
+    user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
+
+    when(userService.getUserById(user.getId())).thenReturn(user);
+
+    mockMvc.perform(get("/users/get").param("userId",user.getId().toString()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.name").value(user.getName()))
+        .andExpect(jsonPath("$.id").value(user.getId()));
+
+    verify(userService).getUserById(user.getId());
   }
 
 }

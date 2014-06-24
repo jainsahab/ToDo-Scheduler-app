@@ -8,7 +8,7 @@
 
   <jpa:repositories base-package="com.prateekj.repositories"/>
   <context:component-scan base-package="com.prateekj.services"/>
-  <context:component-scan base-package="com.prateekj.controllers"/>
+  <context:component-scan base-package="com.prateekj.repositories"/>
 
   <bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
     <property name="config">

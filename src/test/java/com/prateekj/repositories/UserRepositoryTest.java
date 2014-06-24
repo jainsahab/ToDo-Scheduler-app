@@ -43,9 +43,9 @@ public class UserRepositoryTest {
 
     prateek.setTasks(asList(task1, task2));
 
-    userRepository.save(prateek);
+    User savedUser = userRepository.save(prateek);
 
-    User prateekFound = userRepository.findByName(userName);
+    User prateekFound = userRepository.findById(savedUser.getId());
 
     assertThat(prateekFound.getTasks(), hasSize(2));
     assertThat(prateekFound.getTasks(), contains(task1, task2));

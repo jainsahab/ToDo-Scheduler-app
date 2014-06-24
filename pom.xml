@@ -230,8 +230,6 @@
           <server>MyServer</server>
         </configuration>
       </plugin>
-
-
     </plugins>
   </build>
 
