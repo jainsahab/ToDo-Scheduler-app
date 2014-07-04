@@ -1,9 +1,12 @@
 package com.prateekj.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prateekj.infrastructure.TestSetup;
+import com.prateekj.maker.TaskMaker;
 import com.prateekj.maker.UserMaker;
+import com.prateekj.model.Task;
 import com.prateekj.model.User;
-import com.prateekj.services.UserService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static com.natpryce.makeiteasy.MakeItEasy.with;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static java.util.Arrays.asList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,17 +31,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({"classpath:/configuration/test-services-config.xml", "classpath:configuration/mvc-dispatcher-config.xml"})
-public class UserControllerTest {
+public class UserControllerTest extends TestSetup{
 
   @Autowired
   private WebApplicationContext wac;
 
   private MockMvc mockMvc;
-
-  @Autowired
-  private UserService userService;
-
-  private User user;
 
 
   @Before
@@ -49,26 +46,39 @@ public class UserControllerTest {
 
   @Test
   public void shouldAddTheUser() throws Exception {
-    user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
+    User user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
 
     mockMvc.perform(put("/users/add").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(user)))
         .andExpect(status().isCreated());
-
-    verify(userService).saveUser(user);
   }
 
   @Test
   public void shouldGetTheUserById() throws Exception {
-    user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
-
-    when(userService.getUserById(user.getId())).thenReturn(user);
+    User user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
+    user = userRepository.save(user);
 
     mockMvc.perform(get("/users/get").param("userId",user.getId().toString()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.name").value(user.getName()))
         .andExpect(jsonPath("$.id").value(user.getId()));
 
-    verify(userService).getUserById(user.getId());
   }
 
+  @Test
+  public void shouldGetTheUserWithTasks() throws Exception {
+    Task aTask = make(a(TaskMaker.Task));
+    User user = make(a(UserMaker.User, with(UserMaker.name, "some-user"), with(UserMaker.tasks, asList(aTask))));
+    user = userRepository.save(user);
+
+    mockMvc.perform(get("/users/with-tasks").param("userId",user.getId().toString()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.name").value(user.getName()))
+        .andExpect(jsonPath("$.id").value(user.getId()));
+
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    clearAllData();
+  }
 }

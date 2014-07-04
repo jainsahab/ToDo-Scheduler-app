@@ -4,7 +4,9 @@ import com.prateekj.model.User;
 import com.prateekj.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 public class UserService {
 
@@ -17,5 +19,11 @@ public class UserService {
 
   public User getUserById(Integer userId) {
     return userRepository.findById(userId);
+  }
+
+  public User getUserWithTasks(Integer userId) {
+    User foundUser = getUserById(userId);
+    foundUser.fetchLazyCollections();
+    return foundUser;
   }
 }

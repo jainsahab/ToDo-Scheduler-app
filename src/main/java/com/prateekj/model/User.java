@@ -27,6 +27,12 @@ public class User {
 
   String name;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   List<Task> tasks;
+
+
+
+  public void fetchLazyCollections() {
+    this.getTasks().size();
+  }
 }

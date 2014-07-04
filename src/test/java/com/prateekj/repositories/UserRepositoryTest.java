@@ -10,8 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -47,8 +45,6 @@ public class UserRepositoryTest {
 
     User prateekFound = userRepository.findById(savedUser.getId());
 
-    assertThat(prateekFound.getTasks(), hasSize(2));
-    assertThat(prateekFound.getTasks(), contains(task1, task2));
     assertThat(prateekFound.getName(), is(userName));
   }
 }
