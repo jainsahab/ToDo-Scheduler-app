@@ -16,6 +16,8 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,5 +49,18 @@ public class UserServiceTest {
     User foundUser= userService.getUserById(someUser.getId());
 
     assertThat(foundUser, is(someUser));
+  }
+
+  @Test
+  public void shouldGetTheUserWithItsAndWithItsLazyCollection(){
+    String ramu = "ramu";
+    User mockUser = mock(User.class);
+    mockUser.setName(ramu);
+
+    when(userRepository.findById(mockUser.getId())).thenReturn(mockUser);
+    User foundUser= userService.getUserWithTasks(mockUser.getId());
+
+    verify(mockUser, times(1)).fetchLazyCollections();
+    assertThat(foundUser, is(mockUser));
   }
 }

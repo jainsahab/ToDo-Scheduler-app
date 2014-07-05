@@ -1,13 +1,12 @@
 package com.prateekj.repositories;
 
+import com.prateekj.infrastructure.TestSetup;
 import com.prateekj.model.Task;
 import com.prateekj.model.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
@@ -18,14 +17,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:configuration/services-config.xml")
-public class TaskRepositoryTest {
-
-  @Autowired
-  private TaskRepository taskRepository;
-
-  @Autowired
-  private UserRepository userRepository;
+public class TaskRepositoryTest extends TestSetup{
 
   private User user;
 
@@ -36,10 +28,6 @@ public class TaskRepositoryTest {
     userRepository.save(user);
   }
 
-  @After
-  public void tearDown(){
-    userRepository.deleteAll();
-  }
 
   @Test
   public void shouldSaveTheTaskWhenUserIsPreSaved(){
@@ -57,5 +45,10 @@ public class TaskRepositoryTest {
 
     assertThat(allTasks, hasSize(2));
     assertThat(allTasks, contains(someTask, someTask2));
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    clearAllData();
   }
 }

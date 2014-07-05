@@ -1,12 +1,11 @@
 package com.prateekj.repositories;
 
+import com.prateekj.infrastructure.TestSetup;
 import com.prateekj.model.Task;
 import com.prateekj.model.User;
-import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static java.util.Arrays.asList;
@@ -14,16 +13,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:configuration/services-config.xml")
-public class UserRepositoryTest {
+public class UserRepositoryTest extends TestSetup{
 
-  @Autowired
-  private UserRepository userRepository;
-
-  @Before
-  public void setUp(){
-    userRepository.deleteAll();
-  }
 
   @Test
   public void shouldSaveAUserWithHisTasks(){
@@ -46,5 +37,10 @@ public class UserRepositoryTest {
     User prateekFound = userRepository.findById(savedUser.getId());
 
     assertThat(prateekFound.getName(), is(userName));
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    clearAllData();
   }
 }

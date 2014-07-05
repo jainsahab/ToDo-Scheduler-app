@@ -40,5 +40,6 @@ public class TaskServiceTest {
 
     taskService.saveTaskFor(aUser, aTask);
     verify(taskRepository, times(1)).save(eq(aTask));
+    verify(userRepository, times(1)).findOne(aUser.getId());
   }
 }

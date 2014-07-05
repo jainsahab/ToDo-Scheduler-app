@@ -1,5 +1,6 @@
 package com.prateekj.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +25,9 @@ public class Task {
   @GeneratedValue(strategy = GenerationType.AUTO)
   Integer id;
 
-  @ManyToOne
+  @ManyToOne(optional = false)
   @JoinColumn(name = "user_id")
+  @JsonBackReference
   User user;
 
   String work;

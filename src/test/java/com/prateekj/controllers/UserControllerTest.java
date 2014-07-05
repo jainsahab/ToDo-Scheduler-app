@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,15 +21,13 @@ import org.springframework.web.context.WebApplicationContext;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static com.natpryce.makeiteasy.MakeItEasy.with;
-import static java.util.Arrays.asList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration({"classpath:/configuration/test-services-config.xml", "classpath:configuration/mvc-dispatcher-config.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class UserControllerTest extends TestSetup{
 
   @Autowired
@@ -66,9 +63,10 @@ public class UserControllerTest extends TestSetup{
 
   @Test
   public void shouldGetTheUserWithTasks() throws Exception {
-    Task aTask = make(a(TaskMaker.Task));
-    User user = make(a(UserMaker.User, with(UserMaker.name, "some-user"), with(UserMaker.tasks, asList(aTask))));
+    User user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
     user = userRepository.save(user);
+    Task aTask = make(a(TaskMaker.Task, with(TaskMaker.user, user)));
+    taskRepository.save(aTask);
 
     mockMvc.perform(get("/users/with-tasks").param("userId",user.getId().toString()))
         .andExpect(status().isOk())
