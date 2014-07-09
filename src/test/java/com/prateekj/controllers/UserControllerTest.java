@@ -21,6 +21,8 @@ import org.springframework.web.context.WebApplicationContext;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static com.natpryce.makeiteasy.MakeItEasy.with;
+import static com.prateekj.maker.UserMaker.User;
+import static com.prateekj.maker.UserMaker.name;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -43,7 +45,7 @@ public class UserControllerTest extends TestSetup{
 
   @Test
   public void shouldAddTheUser() throws Exception {
-    User user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
+    User user = make(a(User, with(name, "some-user")));
 
     mockMvc.perform(put("/users/add").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(user)))
         .andExpect(status().isCreated());
@@ -51,10 +53,14 @@ public class UserControllerTest extends TestSetup{
 
   @Test
   public void shouldGetTheUserById() throws Exception {
-    User user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
+    String userUniqueName = "userName";
+    String userName = "some-user";
+    User user = make(a(User,
+        with(name, userName),
+        with(UserMaker.userName, userUniqueName)));
     user = userRepository.save(user);
 
-    mockMvc.perform(get("/users/get").param("userId",user.getId().toString()))
+    mockMvc.perform(get("/users/get").param("userName",user.getUserName()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.name").value(user.getName()))
         .andExpect(jsonPath("$.id").value(user.getId()));
@@ -63,12 +69,16 @@ public class UserControllerTest extends TestSetup{
 
   @Test
   public void shouldGetTheUserWithTasks() throws Exception {
-    User user = make(a(UserMaker.User, with(UserMaker.name, "some-user")));
+    String userUniqueName = "userName";
+    String userName = "some-user";
+    User user = make(a(User,
+        with(name, userName),
+        with(UserMaker.userName, userUniqueName)));
     user = userRepository.save(user);
     Task aTask = make(a(TaskMaker.Task, with(TaskMaker.user, user)));
     taskRepository.save(aTask);
 
-    mockMvc.perform(get("/users/with-tasks").param("userId",user.getId().toString()))
+    mockMvc.perform(get("/users/with-tasks").param("userName",user.getUserName()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.name").value(user.getName()))
         .andExpect(jsonPath("$.id").value(user.getId()));

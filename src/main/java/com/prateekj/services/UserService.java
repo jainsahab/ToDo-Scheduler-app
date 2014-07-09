@@ -17,12 +17,12 @@ public class UserService {
     userRepository.save(user);
   }
 
-  public User getUserById(Integer userId) {
-    return userRepository.findById(userId);
+  public User getUserByUserName(String userName) {
+    return userRepository.findByUserName(userName);
   }
 
-  public User getUserWithTasks(Integer userId) {
-    User foundUser = getUserById(userId);
+  public User getUserWithTasks(String userName) {
+    User foundUser = getUserByUserName(userName);
     foundUser.fetchLazyCollections();
     return foundUser;
   }

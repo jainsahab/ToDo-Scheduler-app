@@ -32,14 +32,14 @@ public class UserController {
   }
 
   @RequestMapping(value = "/get", method = GET)
-  public ResponseEntity<User> getUser(@RequestParam Integer userId){
-    User foundUser = userService.getUserById(userId);
+  public ResponseEntity<User> getUser(@RequestParam String userName){
+    User foundUser = userService.getUserByUserName(userName);
     return new ResponseEntity<User>(foundUser, HttpStatus.OK);
   }
 
   @RequestMapping(value = "/with-tasks", method = RequestMethod.GET)
-  public ResponseEntity<User> getUserWithTasks(@RequestParam Integer userId){
-    User foundUser = userService.getUserWithTasks(userId);
+  public ResponseEntity<User> getUserWithTasks(@RequestParam String userName){
+    User foundUser = userService.getUserWithTasks(userName);
     return new ResponseEntity<User>(foundUser, HttpStatus.OK);
   }
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,11 @@ public class User {
   @GeneratedValue(strategy = GenerationType.AUTO)
   Integer id;
 
+  @Column(name = "name")
   String name;
+
+  @Column(name = "user_name")
+  String userName;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Task.class)
   @JsonManagedReference

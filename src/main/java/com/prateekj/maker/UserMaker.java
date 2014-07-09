@@ -13,6 +13,7 @@ import java.util.List;
 public class UserMaker {
   public static final Property<User, Integer> id = new Property();
   public static final Property<User, String> name = new Property();
+  public static final Property<User, String> userName = new Property();
   public static final Property<User, List<Task>> tasks = new Property();
 
 
@@ -21,6 +22,7 @@ public class UserMaker {
       User user = new User();
       user.setId(lookup.valueOf(id, 1));
       user.setName(lookup.valueOf(name, "Ramu Kaka"));
+      user.setUserName(lookup.valueOf(name, "rmKak"));
       user.setTasks(lookup.valueOf(tasks, new ArrayList<Task>()));
       return user;
     }

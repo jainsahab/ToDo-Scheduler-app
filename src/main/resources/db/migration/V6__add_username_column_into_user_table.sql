@@ -1,0 +1,2 @@
+ALTER TABLE user
+ADD COLUMN user_name CHAR(20);

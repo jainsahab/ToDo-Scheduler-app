@@ -12,6 +12,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
+import static com.natpryce.makeiteasy.MakeItEasy.with;
+import static com.prateekj.maker.UserMaker.User;
+import static com.prateekj.maker.UserMaker.name;
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -42,11 +45,13 @@ public class UserServiceTest {
   @Test
   public void shouldGetTheUserWithItsName(){
     String ramu = "ramu";
-    User someUser = make(a(UserMaker.User));
-    someUser.setName(ramu);
+    String userName = "userName";
+    User someUser = make(a(User,
+        with(name, ramu),
+        with(UserMaker.userName, userName)));
 
-    when(userRepository.findById(someUser.getId())).thenReturn(someUser);
-    User foundUser= userService.getUserById(someUser.getId());
+    when(userRepository.findByUserName(someUser.getUserName())).thenReturn(someUser);
+    User foundUser= userService.getUserByUserName(someUser.getUserName());
 
     assertThat(foundUser, is(someUser));
   }
@@ -57,8 +62,8 @@ public class UserServiceTest {
     User mockUser = mock(User.class);
     mockUser.setName(ramu);
 
-    when(userRepository.findById(mockUser.getId())).thenReturn(mockUser);
-    User foundUser= userService.getUserWithTasks(mockUser.getId());
+    when(userRepository.findByUserName(mockUser.getUserName())).thenReturn(mockUser);
+    User foundUser= userService.getUserWithTasks(mockUser.getUserName());
 
     verify(mockUser, times(1)).fetchLazyCollections();
     assertThat(foundUser, is(mockUser));
